@@ -1,17 +1,8 @@
---[[
-    ==================================================
-              TRADE FREEZE PANEL v3.0 (COMPLETE)
-    ==================================================
-    * Theme: Frozen Dark Red Metallic
-    * Layout: Sleek Transparent Panel (Reference Image Match)
-    * Behavior: Cosmetic Only / Intended for Prank & Demonstration
-]]
-
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 
--- Clean up any existing instance of this panel to prevent overlapping
+-- Purane instance ko clean karna taaki double overlap na ho
 if player:WaitForChild("PlayerGui"):FindFirstChild("TradeFreezePanelGui") then
     player.PlayerGui.TradeFreezePanelGui:Destroy()
 end
@@ -22,40 +13,50 @@ gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Parent = player:WaitForChild("PlayerGui")
 
--- MAIN FRAME (Transparent/Sleek background wrapper to align elements perfectly)
+-- MAIN PANEL BACKGROUND (Sleek Dark Glass Container)
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 360, 0, 240)
-frame.Position = UDim2.new(0.5, -180, 0.5, -120)
-frame.BackgroundTransparency = 1 -- Borderless transparent canvas
+frame.Size = UDim2.new(0, 380, 0, 240)
+frame.Position = UDim2.new(0.5, -190, 0.5, -120)
+frame.BackgroundColor3 = Color3.fromRGB(15, 5, 5) -- Sophisticated dark red-tinted black background
+frame.BackgroundTransparency = 0.25 -- Glass/Semi-transparent look
+frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = gui
 
--- TITLE (Trade Freeze panel - SciFi Modern Font)
+-- Rounded Corners for Background
+local frameCorner = Instance.new("UICorner")
+frameCorner.CornerRadius = UDim.new(0, 12)
+frameCorner.Parent = frame
+
+-- Neon Red Outer Glow Border
+local frameStroke = Instance.new("UIStroke")
+frameStroke.Color = Color3.fromRGB(180, 20, 20)
+frameStroke.Thickness = 1.5
+frameStroke.Transparency = 0.4
+frameStroke.Parent = frame
+
+-- TITLE (Trade Freeze panel)
 local title = Instance.new("TextLabel")
 title.Text = "Trade Freeze panel"
-title.Size = UDim2.new(1, 0, 0, 40)
-title.Position = UDim2.new(0, 0, 0, 0)
+title.Size = UDim2.new(1, 0, 0, 50)
+title.Position = UDim2.new(0, 0, 0, 5)
 title.BackgroundTransparency = 1
-title.TextColor3 = Color3.fromRGB(245, 245, 245)
-title.Font = Enum.Font.SciFi -- Clean modern gaming font
-title.TextSize = 25
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Font = Enum.Font.SciFi
+title.TextSize = 24
 title.TextXAlignment = Enum.TextXAlignment.Center
 title.Parent = frame
 
--- FUNCTION: FAKE CYBER SECURITY WARNING NOTIFICATION
+-- FAKE CRITICAL WARNING NOTIFICATION
 local function showNotif()
     local notif = Instance.new("Frame")
     notif.Size = UDim2.new(0, 300, 0, 65)
     notif.Position = UDim2.new(1, 20, 0, 20)
-    notif.BackgroundColor3 = Color3.fromRGB(25, 5, 5) -- Deep Dark warning block
+    notif.BackgroundColor3 = Color3.fromRGB(25, 5, 5)
     notif.Parent = gui
     Instance.new("UICorner", notif).CornerRadius = UDim.new(0, 8)
-    
-    local stroke = Instance.new("UIStroke")
-    stroke.Color = Color3.fromRGB(255, 0, 0)
-    stroke.Thickness = 1.5
-    stroke.Parent = notif
+    Instance.new("UIStroke", notif).Color = Color3.fromRGB(255, 0, 0)
 
     local alertIcon = Instance.new("TextLabel")
     alertIcon.Text = "⚠️"
@@ -89,10 +90,8 @@ local function showNotif()
     t2.TextXAlignment = Enum.TextXAlignment.Left
     t2.Parent = notif
 
-    -- Slide In animation
     TweenService:Create(notif, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(1, -320, 0, 20)}):Play()
     
-    -- Auto slide out and destroy
     task.delay(2.5, function()
         if notif and notif.Parent then
             TweenService:Create(notif, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(1, 20, 0, 20)}):Play()
@@ -102,17 +101,17 @@ local function showNotif()
     end)
 end
 
--- FUNCTION: DYNAMIC TOGGLE GENERATOR (Matches original UI dimensions)
+-- TOGGLE CREATION WITH SMOOTH ANIMATION
 local function makeToggle(text, yPos)
     local btn = Instance.new("Frame")
-    btn.Size = UDim2.new(1, 0, 0, 55)
-    btn.Position = UDim2.new(0, 0, 0, yPos)
+    btn.Size = UDim2.new(0, 340, 0, 55)
+    btn.Position = UDim2.new(0.5, -170, 0, yPos)
     btn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
     btn.BorderSizePixel = 0
     btn.Parent = frame
     Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
 
-    -- Frozen Crimson Red Metallic Gradient Styling
+    -- Crimson Metallic Gradient
     local gradient = Instance.new("UIGradient")
     gradient.Color = ColorSequence.new({
         ColorSequenceKeypoint.new(0, Color3.fromRGB(90, 0, 0)),
@@ -133,20 +132,20 @@ local function makeToggle(text, yPos)
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = btn
 
-    -- TOGGLE SWITCH BACKGROUND SLOT
+    -- SWITCH SLOT
     local toggleBtn = Instance.new("TextButton")
     toggleBtn.Size = UDim2.new(0, 45, 0, 24)
     toggleBtn.Position = UDim2.new(1, -65, 0.5, -12)
-    toggleBtn.BackgroundColor3 = Color3.fromRGB(25, 5, 5) -- Dark slot base
+    toggleBtn.BackgroundColor3 = Color3.fromRGB(35, 10, 10) -- Dark red slot base
     toggleBtn.Text = ""
     toggleBtn.Parent = btn
     Instance.new("UICorner", toggleBtn).CornerRadius = UDim.new(1, 0)
 
-    -- TOGGLE KNOB (Smooth White Circle)
+    -- KNOB (The White Circle)
     local circle = Instance.new("Frame")
     circle.Size = UDim2.new(0, 20, 0, 20)
     circle.Position = UDim2.new(0, 2, 0.5, -10)
-    circle.BackgroundColor3 = Color3.fromRGB(235, 235, 240) -- Silver/White tint matching image
+    circle.BackgroundColor3 = Color3.fromRGB(235, 235, 240)
     circle.Parent = toggleBtn
     Instance.new("UICorner", circle).CornerRadius = UDim.new(1, 0)
 
@@ -154,18 +153,18 @@ local function makeToggle(text, yPos)
     toggleBtn.MouseButton1Click:Connect(function()
         state = not state
         if state then
-            -- Active Glow Red State
-            TweenService:Create(toggleBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(255, 30, 30)}):Play()
-            TweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Position = UDim2.new(0, 23, 0.5, -10)}):Play()
+            -- Smooth Animation: Knob right side move karega aur background bright red hoga
+            TweenService:Create(toggleBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 30, 30)}):Play()
+            TweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 23, 0.5, -10)}):Play()
         else
-            -- Deactivated Base State
-            TweenService:Create(toggleBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {BackgroundColor3 = Color3.fromRGB(25, 5, 5)}):Play()
-            TweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Position = UDim2.new(0, 2, 0.5, -10)}):Play()
+            -- Smooth Animation: Knob vapas left side aayega aur color dark ho jayega
+            TweenService:Create(toggleBtn, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(35, 10, 10)}):Play()
+            TweenService:Create(circle, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0, 2, 0.5, -10)}):Play()
         end
-        showNotif() -- Automatically fire fake override failure response
+        showNotif()
     end)
 end
 
--- RENDER BUTTONS (Properly Spaced Layout)
-makeToggle("Freeze Trade", 60)
-makeToggle("Force Accept", 130)
+-- Render buttons with ideal alignment inside the new background frame
+makeToggle("Freeze Trade", 65)
+makeToggle("Force Accept", 135)
